@@ -1,0 +1,6 @@
+{
+  "name": "Justice Compass",
+  "description": "WebMCP case workspace specialized exclusively in landlord and tenant dispute resolution, security deposit recovery, unlawful eviction defense, and habitability claims with human-in-the-loop review.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
