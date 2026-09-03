@@ -11,7 +11,7 @@ import { caseStorage } from '../../services/caseStorage';
  *
  * INPUT IT ACCEPTS:
  * - title (string): Descriptive title for the case
- * - area (DomainArea): One of 'housing' | 'health' | 'family' | 'employment' | 'consumer' | 'society'
+ * - area (DomainArea): The supported land and tenancy domain, 'housing'
  * - issueType (string): Subcategory of the dispute or problem
  * - description (string): Detailed problem description
  * - jurisdiction (optional string): Defaults to 'Uganda'
@@ -30,7 +30,7 @@ import { caseStorage } from '../../services/caseStorage';
  */
 export const createCaseTool: WebMCPToolDefinition = {
   name: 'create_case',
-  description: 'Create a new organized case workspace across any supported domain (housing, health, family, employment, consumer, society).',
+  description: 'Create a new organized land or landlord-tenant case workspace.',
   category: 'case_management',
   supportedAreas: 'all',
   requiresHumanReview: false,
@@ -51,8 +51,8 @@ export const createCaseTool: WebMCPToolDefinition = {
       },
       area: {
         type: 'string',
-        enum: ['housing', 'health', 'family', 'employment', 'consumer', 'society'],
-        description: 'Primary problem domain.'
+        enum: ['housing'],
+        description: 'Primary land and tenancy problem domain.'
       },
       issueType: {
         type: 'string',

@@ -3,6 +3,10 @@ import { INITIAL_MOCK_CASES } from '../data/mockCases';
 
 const STORAGE_KEY = 'justice_compass_cases_v1';
 
+function landCases(cases: Case[]): Case[] {
+  return cases.filter((caseItem) => caseItem.area === 'housing');
+}
+
 type Listener = (cases: Case[]) => void;
 const listeners = new Set<Listener>();
 
@@ -24,7 +28,9 @@ export const caseStorage = {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MOCK_CASES));
         return INITIAL_MOCK_CASES;
       }
-      return JSON.parse(raw);
+      const storedCases = landCases(JSON.parse(raw));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(storedCases));
+      return storedCases;
     } catch (err) {
       console.warn('Failed to read from localStorage, using in-memory mock', err);
       return INITIAL_MOCK_CASES;
@@ -80,8 +86,9 @@ export const caseStorage = {
     } catch (e) {
       console.error(e);
     }
-    notify(INITIAL_MOCK_CASES);
-    return INITIAL_MOCK_CASES;
+    const landOnlyCases = landCases(INITIAL_MOCK_CASES);
+    notify(landOnlyCases);
+    return landOnlyCases;
   },
 
   addFact(caseId: string, fact: Omit<CaseFact, 'id' | 'createdAt'>): CaseFact | null {

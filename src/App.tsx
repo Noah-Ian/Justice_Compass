@@ -75,7 +75,6 @@ export default function App() {
         }}
         onOpenNewCase={() => handleOpenNewCaseModal()}
         onOpenAgentDemo={() => setIsAgentDemoOpen(true)}
-        casesCount={cases.length}
       />
 
       {/* Main Content Area */}

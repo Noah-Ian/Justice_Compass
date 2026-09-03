@@ -7,13 +7,13 @@ export const DisclaimerBanner: React.FC = () => {
   if (dismissed) return null;
 
   return (
-    <aside aria-label="Legal and medical advisory notice" className="bg-amber-50 border-b border-amber-200 text-amber-900 text-xs px-4 py-2.5 transition-all">
+    <aside aria-label="Legal advisory notice" className="bg-amber-50 border-b border-amber-200 text-amber-900 text-xs px-4 py-2.5 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
           <p className="leading-relaxed">
             <strong className="font-semibold text-amber-950">General Information & Organizational Assistance:</strong>{' '}
-            Justice Compass does not provide legal representation, medical diagnosis, treatment, or professional counseling. All generated drafts and action plans require human review and discretion.
+            Justice Compass provides organizational legal information, not legal representation. All generated drafts and action plans require human review and discretion.
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">

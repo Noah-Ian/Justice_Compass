@@ -8,7 +8,7 @@ import { caseStorage } from '../../services/caseStorage';
  * ============================================================================
  *
  * WHAT IT DOES:
- * Searches verified legal, health, public-service, and community guidelines
+ * Searches verified land, tenancy, public-service, and community guidelines
  * across supported jurisdictions. It returns authoritative summaries, statutory
  * guidelines, recommended steps, and official bodies.
  *
@@ -23,20 +23,20 @@ import { caseStorage } from '../../services/caseStorage';
  *
  * WHY AN AGENT USES IT:
  * To ground its advice in actual guidelines and laws rather than hallucinating
- * statutes, legal sections, or medical advice.
+ * statutes, legal sections, or unsupported advice.
  *
  * HUMAN APPROVAL NOTE:
  * Read-only knowledge retrieval.
  */
 export const searchInformationTool: WebMCPToolDefinition = {
   name: 'search_information',
-  description: 'Search verified domain information, official statutory guidelines, patient charters, and public-service regulations.',
+  description: 'Search verified land and tenancy statutes, official guidance, and public-service regulations.',
   category: 'knowledge',
   supportedAreas: 'all',
   requiresHumanReview: false,
   consequential: false,
   explanation: {
-    purpose: 'Queries verified multi-domain legal, healthcare, and community guidelines.',
+    purpose: 'Queries verified land, tenancy, and community guidelines.',
     inputs: 'Search query string, optional domain area filter, optional jurisdiction.',
     outputs: 'List of matching InformationSource records with summaries, citations, and guidance steps.',
     whyAgentUsesIt: 'To ensure all synthesized advice is grounded in authentic, verified information.',
@@ -47,12 +47,12 @@ export const searchInformationTool: WebMCPToolDefinition = {
     properties: {
       query: {
         type: 'string',
-        description: 'Search terms (e.g., "security deposit deduction", "patient medical records", "child maintenance").'
+        description: 'Search terms such as "security deposit deduction", "eviction notice", or "rent increase".'
       },
       area: {
         type: 'string',
-        enum: ['housing', 'health', 'family', 'employment', 'consumer', 'society'],
-        description: 'Optional domain area filter.'
+        enum: ['housing'],
+        description: 'Optional land and tenancy domain filter.'
       },
       jurisdiction: {
         type: 'string',
@@ -109,13 +109,13 @@ export const searchInformationTool: WebMCPToolDefinition = {
  */
 export const findRelevantSourcesTool: WebMCPToolDefinition = {
   name: 'find_relevant_sources',
-  description: 'Automatically find and link relevant verified legal, healthcare, or public-service sources to a specific case.',
+  description: 'Automatically find and link relevant verified land, tenancy, or public-service sources to a specific case.',
   category: 'knowledge',
   supportedAreas: 'all',
   requiresHumanReview: false,
   consequential: false,
   explanation: {
-    purpose: 'Discovers verified sources matching the case narrative and binds them to the case file.',
+    purpose: 'Discovers verified sources matching the land or tenancy case narrative and binds them to the case file.',
     inputs: 'Target case ID.',
     outputs: 'Array of relevant information sources added to the case.',
     whyAgentUsesIt: 'To substantiate the case with authentic citations and official authority contacts.',
