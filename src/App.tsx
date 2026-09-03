@@ -14,7 +14,6 @@ import { WebMCPInspector } from './components/WebMCPInspector';
 import { NewCaseModal } from './components/NewCaseModal';
 import { AgentDemoModal } from './components/AgentDemoModal';
 import { caseStorage } from './services/caseStorage';
-import { initGlobalWebMCP } from './webmcp';
 import { Case, DomainArea } from './types';
 import { CaseCard } from './components/CaseCard';
 import { Plus, Search, Filter } from 'lucide-react';
@@ -32,9 +31,6 @@ export default function App() {
   const [casesSearch, setCasesSearch] = useState('');
 
   useEffect(() => {
-    // Initialize WebMCP tools on window object for agent interop
-    initGlobalWebMCP();
-
     // Subscribe to case storage updates
     const unsubscribe = caseStorage.subscribe((updatedCases) => {
       setCases(updatedCases);

@@ -1,4 +1,4 @@
-import { WebMCPToolDefinition, WebMCPExecutionLog } from '../types';
+import { WebMCPToolDefinition, WebMCPExecutionLog, WebMCPToolSchema } from '../types';
 import { classifyProblemAreaTool } from './tools/classification';
 import { searchInformationTool, findRelevantSourcesTool } from './tools/knowledge';
 import { createCaseTool, getCaseTool, updateCaseTool, addCaseFactTool } from './tools/caseManagement';
@@ -146,8 +146,23 @@ export class WebMCPRegistry {
 // Global Singleton Registry
 export const webMCP = new WebMCPRegistry();
 
+interface DocumentModelContextTool {
+  name: string;
+  description: string;
+  inputSchema: WebMCPToolSchema;
+  execute: (input: any) => Promise<any>;
+}
+
+interface DocumentModelContext {
+  registerTool: (tool: DocumentModelContextTool) => void;
+}
+
 // Initialize on browser window for inspection and WebMCP compliance
 declare global {
+  interface Document {
+    modelContext?: DocumentModelContext;
+  }
+
   interface Window {
     webmcp?: {
       version: string;
@@ -162,8 +177,38 @@ declare global {
   }
 }
 
+let modelContextToolsRegistered = false;
+
+function registerDocumentModelContextTools() {
+  if (modelContextToolsRegistered || typeof document === 'undefined') return;
+
+  // WebMCP-enabled browsers provide this registration surface. The fallback
+  // keeps the same contract available for local inspection in regular browsers.
+  if (!document.modelContext) {
+    const registeredTools = new Map<string, DocumentModelContextTool>();
+    document.modelContext = {
+      registerTool: (tool) => {
+        registeredTools.set(tool.name, tool);
+      }
+    };
+  }
+
+  ALL_WEBMCP_TOOLS.forEach((tool) => {
+    document.modelContext!.registerTool({
+      name: tool.name,
+      description: tool.description,
+      inputSchema: tool.parameters,
+      execute: async (input) => webMCP.callTool(tool.name, input)
+    });
+  });
+
+  modelContextToolsRegistered = true;
+}
+
 export function initGlobalWebMCP() {
   if (typeof window === 'undefined') return;
+
+  registerDocumentModelContextTools();
 
   window.webmcp = {
     version: '2026.1.0',
