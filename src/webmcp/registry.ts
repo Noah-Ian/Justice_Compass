@@ -180,18 +180,7 @@ declare global {
 let modelContextToolsRegistered = false;
 
 function registerDocumentModelContextTools() {
-  if (modelContextToolsRegistered || typeof document === 'undefined') return;
-
-  // WebMCP-enabled browsers provide this registration surface. The fallback
-  // keeps the same contract available for local inspection in regular browsers.
-  if (!document.modelContext) {
-    const registeredTools = new Map<string, DocumentModelContextTool>();
-    document.modelContext = {
-      registerTool: (tool) => {
-        registeredTools.set(tool.name, tool);
-      }
-    };
-  }
+  if (modelContextToolsRegistered || typeof document === 'undefined' || !document.modelContext) return;
 
   ALL_WEBMCP_TOOLS.forEach((tool) => {
     document.modelContext!.registerTool({
